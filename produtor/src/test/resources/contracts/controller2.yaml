@@ -1,0 +1,13 @@
+description: |
+  Represents a scenario of sending request to /test
+request:
+  method: GET
+  url: /test/user
+response:
+  status: 200
+  body:
+    name: Alexandre tavares stub
+    registration: 12345
+    credit: true
+  #headers:
+   # contentType: application/json
