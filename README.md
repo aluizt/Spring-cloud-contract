@@ -124,6 +124,8 @@ public class ContractVerifierTest extends BaseClass {
 }
 ```
 
+Apos estas etapas se houver alguma modificação no endpoint que quebre o contrato o teste ira quebrar ao fazer o build da aplicação.
+
 #### build.gradle
 ```
 buildscript {
@@ -185,3 +187,133 @@ dependencyManagement {
     }
 }
 ```
+## Consumidor
+
+Para o lado que esta consumindo o serviço iremos criar a classe de teste abaixo.
+
+```
+package br.com.consumidor.controller;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
+import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
+import org.springframework.http.*;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@AutoConfigureStubRunner(
+        ids = "br.com:produtor:+:stubs:6565",
+        stubsMode = StubRunnerProperties.StubsMode.LOCAL)
+
+public class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    private RestTemplate restTemplate = new RestTemplate();
+
+    @Test
+    public void when() throws Exception {
+
+        var result = getResult("/test/user");
+
+        Assert.assertTrue(result.contains("Joao da Silva"));
+        Assert.assertTrue(result.contains("12345"));
+        Assert.assertTrue(result.contains("true"));
+
+    }
+
+    private String getResult(String endpoint) {
+
+        final String address = "http://localhost:6565/" + endpoint;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                address,
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),
+                String.class
+        );
+
+        return response.toString();
+    }
+
+}
+```
+Na anotação AutoConfigureStubRunner é informado a porta onde os STUBS estão disponivies, neste caso na porta 6565.
+No teste é feito uma chamada para o metodo getResult que retorna as informações contidas no STUB que sera comparada com a que esta no teste, ser forem diferentes o teste ira quebrar.
+
+#### build.gradle
+
+´´´
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.1.3.RELEASE'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'spring-cloud-contract'
+
+group = 'br.com'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "Greenwich.SR3")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+
+    testImplementation 'io.rest-assured:rest-assured:4.1.1'
+    testImplementation 'io.rest-assured:json-path:4.1.1'
+    testImplementation ' io.rest-assegurado: json-schema-validator: 4.1.1 '
+    testImplementation ' io.rest-assegurado: spring-mock-mvc: 4.1.1 '
+
+
+    compile group: 'net.minidev', name: 'json-smart', version: '1.1.1'
+
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+´´´
