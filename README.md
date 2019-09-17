@@ -21,10 +21,10 @@ response:
   headers:
     contentType: application/json
 ```
-Neste exemplo temos 
-Description : com uma descrição do senario que sera testado.
-Request     : com o metodo e a url que sera testada.
-Response    : contem a resposta que esperamos, neste exemplo queremos o status 200 com um body contendo os atributos de um objeto, alem de um headers com o contentType.
+Neste exemplo temos                                                 
+Description : com uma descrição do senario que sera testado.                               
+Request     : com o metodo e a url que sera testada.                                      
+Response    : contem a resposta que esperamos, neste exemplo queremos o status 200 com um body contendo os atributos de um objeto, alem de um headers com o contentType.                            
 
 build.gradle
 ```
