@@ -2,6 +2,30 @@
 Poc demonstrando o uso de STUBS para validar contratos de comunicação entre um consumidor e um produtor.
 
 ## Produtor
+
+No Spring Cloud Contract, um contrato pode ser definido em um arquivo Groovy, YAML ou Pact. 
+Para este exemplo estaremos utilizando um arquivo YAML:
+
+```
+description: |
+  Represents a scenario of sending request to /test
+request:
+  method: GET
+  url: /test/user
+response:
+  status: 200
+  body:
+    name: Alexandre tavares stub
+    registration: 12345
+    credit: true
+  headers:
+    contentType: application/json
+```
+Neste exemplo temos 
+Description : com uma descrição do senario que sera testado.
+Request     : com o metodo e a url que sera testada.
+Response    : contem a resposta que esperamos, neste exemplo queremos o status 200 com um body contendo os atributos de um objeto, alem de um headers com o contentType.
+
 build.gradle
 ```
 buildscript {
