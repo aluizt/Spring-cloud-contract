@@ -251,7 +251,7 @@ public class TestControllerTest {
 
 }
 ```
-Na anotação AutoConfigureStubRunner é informado a porta onde os STUBS estão disponivies, neste caso na porta 6565.
+Na anotação AutoConfigureStubRunner é informado a porta onde o STUB está disponiviel, neste caso na porta 6565.
 No teste é feito uma chamada para o metodo getResult que retorna as informações contidas no STUB que sera comparada com a que esta no teste, ser forem diferentes o teste ira quebrar.
 
 #### build.gradle
@@ -317,3 +317,4 @@ dependencyManagement {
     }
 }
 ´´´
+
