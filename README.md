@@ -256,7 +256,7 @@ No teste é feito uma chamada para o metodo getResult que retorna as informaçõ
 
 #### build.gradle
 
-´´´
+```
 buildscript {
     repositories {
         mavenCentral()
@@ -299,16 +299,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
-
     testImplementation 'io.rest-assured:rest-assured:4.1.1'
     testImplementation 'io.rest-assured:json-path:4.1.1'
     testImplementation ' io.rest-assegurado: json-schema-validator: 4.1.1 '
     testImplementation ' io.rest-assegurado: spring-mock-mvc: 4.1.1 '
-
-
     compile group: 'net.minidev', name: 'json-smart', version: '1.1.1'
-
-
 }
 
 dependencyManagement {
