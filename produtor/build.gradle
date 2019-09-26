@@ -18,20 +18,23 @@ apply plugin: 'maven-publish'
 
 
 contracts {
-    baseClassForTests = 'br.com.produtor.BaseClass'
-
-//    contractRepository {
-//        repositoryUrl = "git://https://github.com/aluizt/spring-cloud-contract-git"       
-//
-//    }
-//
-//    contractsMode = "REMOTE"
     
-  
+    baseClassForTests = 'br.com.produtor.BaseClass'
+    contractsMode = "REMOTE" 
+    
+    contractDependency {
+        stringNotation = "br.com:produtor:+"
+        //stringNotation = "${project.group}:${project.name}:${project.version}"
+
+    }
+    contractRepository{
+        repositoryUrl = "git://https://github.com/aluizt/stubs"
+        username = 'aluizt'
+        password = 'Malu2m@lu'
+    }
 }
 
 publish.dependsOn("publishStubsToScm")
-
 
 group = 'br.com'
 version = '0.0.1-SNAPSHOT'

@@ -9,5 +9,3 @@ response:
     name: Alexandre tavares stub
     registration: 12345
     credit: true
-  #headers:
-   # contentType: application/json
