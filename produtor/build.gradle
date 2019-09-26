@@ -30,7 +30,7 @@ contracts {
     contractRepository{
         repositoryUrl = "git://https://github.com/aluizt/stubs"
         username = 'aluizt'
-        password = 'Malu2m@lu'
+        password = '*******'
     }
 }
 
